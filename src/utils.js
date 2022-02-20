@@ -1,0 +1,10 @@
+/**
+ *
+ * @param {String} imageName The image file name.
+ * @returns The image file url in folder "assets".
+ */
+export function getImage(imageName) {
+  return new URL(`./assets/${imageName}`, import.meta.url).href;
+}
+
+export const url = new URL("/api/", "https://star.fhsh.tp.edu.tw").href;
