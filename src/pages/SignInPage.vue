@@ -65,7 +65,7 @@ export default {
     };
 
     const authURL = new URL("./auth/", url);
-    console.log(authURL);
+    // console.log(authURL);
     const formSubmit = (addr, pwd) => {
       if (addr === "" || pwd === "") {
         isAlert.value = true;

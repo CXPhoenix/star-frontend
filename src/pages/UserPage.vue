@@ -39,6 +39,7 @@ export default {
       checkRankPage: "查詢推薦順序",
       updateAspiredRankPage: "新增/修改預選志願學群",
       checkRankApplyPage: "瀏覽/列印預選志願學群",
+      class8ValidsPage: "檢視合格的第八學群學系",
     };
 
     const optionSwitch = (page) => {
