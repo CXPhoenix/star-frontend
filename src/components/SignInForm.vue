@@ -1,7 +1,7 @@
 <template>
   <form
     id="signInForm"
-    class="relative flex h-full w-full flex-col items-center gap-y-6 rounded-md border-gray-400 px-10 pt-12 pb-9 md:min-h-[500px] md:w-[26rem] md:border-[1px]"
+    class="relative flex h-full w-full flex-col items-center gap-y-6 rounded-md border-gray-400 px-10 pt-12 pb-9 md:max-h-[500px] md:w-[26rem] md:border-[1px]"
     @submit.prevent="formSubmit(addrArea.value, pwdArea.value)"
     v-if="isOpen"
   >

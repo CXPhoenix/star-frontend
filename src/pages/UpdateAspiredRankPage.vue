@@ -82,9 +82,9 @@
   </div>
   <Modal @closeModal="closeAddModal" v-if="isAddModalOpen">
     <div
-      class="max-h-[80vh] w-full space-y-3 overflow-y-auto rounded-md bg-white py-3 px-2"
+      class="max-h-[80vh] w-full space-y-3 overflow-y-auto rounded-lg bg-white py-3 px-2 md:w-9/12"
     >
-      <p class="text-center">新增志願</p>
+      <p class="text-center md:text-2xl">新增志願</p>
       <label for="" class="relative my-2 w-full p-2">
         <button
           class="absolute top-4 right-4 h-full select-none p-1 outline-none focus:border-0"

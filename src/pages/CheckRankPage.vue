@@ -92,21 +92,21 @@ export default {
         text: "國文級分",
         value: ref(datas.examChi),
       },
-      //   {
-      //     id: "examMathA",
-      //     text: "數A級分",
-      //     value: ref(datas.examMathA),
-      //   },
-      //   {
-      //     id: "examMathB",
-      //     text: "數B級分",
-      //     value: ref(datas.examMathB),
-      //   },
       {
-        id: "examMath",
-        text: "數學級分",
-        value: ref(datas.examMath),
+        id: "examMathA",
+        text: "數A級分",
+        value: ref(datas.examMathA),
       },
+      {
+        id: "examMathB",
+        text: "數B級分",
+        value: ref(datas.examMathB),
+      },
+      // {
+      //   id: "examMath",
+      //   text: "數學級分",
+      //   value: ref(datas.examMath),
+      // },
       {
         id: "examEn",
         text: "英文級分",
