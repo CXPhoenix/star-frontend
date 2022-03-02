@@ -116,6 +116,11 @@ export default {
     try {
       const userData = JSON.parse(window.sessionStorage.getItem("userData"));
       const userRankings = userData.userRankings;
+      if (userRankings.length === 0) {
+        alert("你沒有選擇任何的志願喔！\n去填寫你的志願吧！");
+        isLoading.value = false;
+        emit("prevPage", "updateAspiredRankPage");
+      }
       userRankings.forEach((userRanking) => {
         if (
           rankingDatas.value.find(
