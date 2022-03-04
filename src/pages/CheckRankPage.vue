@@ -70,6 +70,7 @@ export default {
       examMath: "",
       examSoc: "",
       examSci: "",
+      examEnListen: "",
     });
     const userData = [
       {
@@ -121,6 +122,11 @@ export default {
         id: "examSci",
         text: "自然級分",
         value: ref(datas.examSci),
+      },
+      {
+        id: "examEnListen",
+        text: "英聽擇優",
+        value: ref(datas.examEnListen),
       },
       {
         id: "schoolSeq",
