@@ -32,7 +32,7 @@ export default {
     });
     const openTime = {
       start: new Date("2022/2/1").getTime(),
-      end: new Date("2022/3/5").getTime(),
+      end: new Date("2022/3/9 13:00").getTime(),
     };
     const nowTime = new Date().getTime();
     loadPageStatus(pageController);
