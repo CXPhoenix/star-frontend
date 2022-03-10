@@ -8,6 +8,7 @@ import UpdateAspiredRankPage from "./pages/UpdateAspiredRankPage.vue";
 import CheckRankApplyPage from "./pages/CheckRankApplyPage.vue";
 import NotOpen from "./pages/NotOpen.vue";
 import Class8ValidsPage from "./pages/Class8ValidsPage.vue";
+import UpdateApplyRankPage from "./pages/UpdateApplyRankPage.vue";
 export default {
   components: {
     BasicInfoPage,
@@ -18,7 +19,8 @@ export default {
     CheckRankApplyPage,
     NotOpen,
     Class8ValidsPage,
-  },
+    UpdateApplyRankPage
+},
   setup() {
     const pageController = reactive({
       basicInfoPage: true,
@@ -29,6 +31,7 @@ export default {
       checkRankApplyPage: false,
       notOpen: false,
       class8ValidsPage: false,
+      updateApplyRankPage: false,
     });
     const openTime = {
       start: new Date("2022/2/1").getTime(),
@@ -150,6 +153,7 @@ function loadPageStatus(pageController) {
     @signOut="switchPage('signInPage')"
     @prevPage="switchPage"
   />
+  <UpdateApplyRankPage v-if="pageController.updateApplyRankPage" @signOut="switchPage('signInPage')" @prevPage="switchPage" />
 </template>
 
 <style></style>

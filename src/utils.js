@@ -10,3 +10,15 @@ export function getImage(imageName) {
 export const url = new URL("/api/", "https://star.fhsh.tp.edu.tw").href;
 // export const url = new URL("http://203.72.59.154:8000").href;
 // export const url = new URL("http://localhost:8000").href;
+
+export const updateAspiredExpiredTime = new Date("2022/03/11 17:00");
+
+export const starApplyExpiredTime = new Date("2022/03/09 13:00");
+
+export const isUpdateAspiredOpenTime = (expiredTime) => {
+  const now = new Date();
+  if (now.getTime() > expiredTime.getTime()) {
+    return false;
+  }
+  return true;
+};

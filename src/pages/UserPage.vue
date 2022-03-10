@@ -7,8 +7,9 @@
         v-for="(value, key) in options"
         :key="key"
         @click="optionSwitch(key)"
+        v-show="value.isOpen"
       >
-        {{ value }}
+        {{ value.text }}
       </button>
     </div>
   </div>
@@ -19,7 +20,12 @@
 import TopNavBar from "../components/TopNavBar.vue";
 import LoadingModal from "../componentSet/LoadingModal.vue";
 import { ref } from "vue";
-import { url } from "../utils";
+import {
+  isUpdateAspiredOpenTime,
+  starApplyExpiredTime,
+  updateAspiredExpiredTime,
+  url,
+} from "../utils";
 export default {
   components: {
     TopNavBar,
@@ -36,10 +42,17 @@ export default {
     }
     const isLoading = ref(true);
     const options = {
-      checkRankPage: "查詢推薦順序",
-      updateAspiredRankPage: "新增/修改預選志願學群",
-      checkRankApplyPage: "瀏覽/列印預選志願學群",
-      class8ValidsPage: "檢視合格的第八學群學系",
+      checkRankPage: { isOpen: true, text: "查詢推薦順序" },
+      updateAspiredRankPage: {
+        isOpen: isUpdateAspiredOpenTime(updateAspiredExpiredTime),
+        text: "新增/修改預選志願學群",
+      },
+      checkRankApplyPage: {
+        isOpen: isUpdateAspiredOpenTime(starApplyExpiredTime),
+        text: "瀏覽/列印預選志願學群",
+      },
+      class8ValidsPage: { isOpen: true, text: "檢視合格的第八學群學系" },
+      updateApplyRankPage: { isOpen: true, text: "繁星推薦學系排序" },
     };
 
     const optionSwitch = (page) => {
