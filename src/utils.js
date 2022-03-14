@@ -13,12 +13,12 @@ export const url = new URL("/api/", "https://star.fhsh.tp.edu.tw").href;
 
 export const openTime = {
   start: new Date("2022/2/1").getTime(),
-  end: new Date("2022/3/14 13:00").getTime(),
+  end: new Date("2022/3/14 09:01").getTime(),
 };
 
 export const updateAspiredExpiredTime = new Date("2022/03/11 17:00");
 
-export const starApplyExpiredTime = new Date("2022/03/09 13:00");
+export const starApplyExpiredTime = new Date("2022/03/09 09:01");
 
 export const isUpdateAspiredOpenTime = (expiredTime) => {
   const now = new Date();
