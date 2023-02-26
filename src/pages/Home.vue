@@ -47,9 +47,11 @@ import VerticalButton from "../components/VerticalButton.vue";
         </p>
       </div>
     </div>
-    <VerticalButton bgColor="#13da32" class="w-full">
-      <p class="text-white">我知道了！</p>
-    </VerticalButton>
+    <router-link to="/sign-in" class="w-full">
+      <VerticalButton bgColor="#13da32" class="w-full">
+        <p class="text-white">我知道了！</p>
+      </VerticalButton>
+    </router-link>
   </div>
   <Gap />
 </template>
