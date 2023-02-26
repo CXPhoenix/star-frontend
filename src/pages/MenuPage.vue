@@ -4,19 +4,19 @@ import VerticalButton from "../components/VerticalButton.vue";
 const menus = [
   {
     content: "查詢推薦順序",
-    path: "/user",
+    path: "/user/user",
   },
   {
     content: "新增/修改預選志願學群",
-    path: "/menu",
+    path: "/user/apply-volunteer",
   },
   {
-    content: "瀏覽/列印預選志願學群",
-    path: "/menu",
+    content: "確認/列印預選志願學群",
+    path: "/user/check-volunteer",
   },
   {
     content: "檢視合格的第八學群學系",
-    path: "/menu",
+    path: "/user/valid-dept8",
   },
 ];
 </script>

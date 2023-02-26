@@ -1,5 +1,8 @@
 <script setup>
+import JumpPageButton from "../components/JumpPageButton.vue";
 import VerticalButton from "../components/VerticalButton.vue";
+
+const user = JSON.parse(window.sessionStorage.getItem("user"));
 
 const getUserInfo = () => {
   return [
@@ -15,7 +18,12 @@ const getUserInfo = () => {
       "自然級分",
       "推薦順序",
     ],
-    ["0", "1", "2", "2", "2", "2", "2", "2", "2", "2"],
+    [
+      user.account,
+      user.username,
+      ...user.studentGrades.slice(0, 7),
+      user.applyRank,
+    ],
   ];
 };
 </script>
@@ -32,15 +40,11 @@ const getUserInfo = () => {
       <p class="justify-self-end">{{ userInfoKey }}:</p>
       <p class="justify-self-start">{{ getUserInfo()[1][index] }}</p>
     </div>
-    <div class="fixed bottom-10 right-0 sm:right-20 lg:right-40">
-      <router-link to="/menu">
-        <VerticalButton bg-color="#fff">
-          <p class="">新增/修改預選志願學群</p>
-          <span class="text-lg">
-            <font-awesome-icon icon="fa-solid fa-arrow-right" />
-          </span>
-        </VerticalButton>
-      </router-link>
-    </div>
+
+    <JumpPageButton
+      position="right"
+      content="新增/修改預選志願學群"
+      path="/user/apply-volunteer"
+    />
   </div>
 </template>

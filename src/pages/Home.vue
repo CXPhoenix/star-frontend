@@ -36,9 +36,9 @@ import VerticalButton from "../components/VerticalButton.vue";
         </p>
       </div>
       <div class="text-lg">
-        <h3 class="font-bold">瀏覽/列印預選志願學群</h3>
+        <h3 class="font-bold">確認/列印預選志願學群</h3>
         <p class="">
-          瀏覽時請特別核對你的學群都有上去。當按下【 產生申請表
+          確認時請特別核對你的學群都有上去。當按下【 產生申請表
           】按鈕後，系統會幫你自動生成 pdf 檔案格式的報名表。
         </p>
         <p class="">

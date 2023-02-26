@@ -12,7 +12,7 @@ const styleObject = {
 
 <template>
   <button
-    class="flex items-center justify-center gap-3 rounded-lg p-2"
+    class="flex items-center justify-center gap-2 rounded-lg p-2"
     :class="{
       'border-2': bgColor === 'white',
       'border-gray-600': bgColor === 'white',

@@ -2,7 +2,7 @@
 import Alert from "./components/Alert.vue";
 import Loading from "./components/Loading.vue";
 import Model from "./components/Model.vue";
-import Nav from "./components/Nav.vue";
+import Nav from "./pages/Nav.vue";
 </script>
 
 <template>
