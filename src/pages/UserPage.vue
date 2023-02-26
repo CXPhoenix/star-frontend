@@ -22,7 +22,7 @@ const getUserInfo = () => {
 
 <template>
   <div
-    class="relative mx-auto flex w-full max-w-xl flex-col items-center justify-center gap-4 py-10 pt-14"
+    class="mx-auto flex w-full max-w-xl flex-col items-center justify-center gap-4 py-10 pt-14"
   >
     <div
       class="grid w-full grid-cols-2 justify-items-stretch gap-8 text-xl"
@@ -32,11 +32,11 @@ const getUserInfo = () => {
       <p class="justify-self-end">{{ userInfoKey }}:</p>
       <p class="justify-self-start">{{ getUserInfo()[1][index] }}</p>
     </div>
-    <div class="absolute top-0 right-0">
+    <div class="fixed bottom-10 right-0 sm:right-20 lg:right-40">
       <router-link to="/menu">
         <VerticalButton bg-color="#fff">
           <p class="">新增/修改預選志願學群</p>
-          <span class="">
+          <span class="text-lg">
             <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </span>
         </VerticalButton>
