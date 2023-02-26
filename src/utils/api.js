@@ -4,6 +4,14 @@ const req = axios.create({
   baseURL: "https://star.fhsh.tp.edu.tw/api",
 });
 
+const patchEvent = () => {
+  window.dispatchEvent(new CustomEvent("user-update"), {
+    detail: {
+      storage: window.sessionStorage.getItem("user"),
+    },
+  });
+};
+
 export const getSignIn = async (account, password) => {
   const reqst = await req.post("/user/sign-in", {
     account,
@@ -24,6 +32,7 @@ export const getUser = async (accessToken) => {
   });
 
   window.sessionStorage.setItem("user", JSON.stringify(data.data));
+  patchEvent();
   return data.data;
 };
 
@@ -38,5 +47,6 @@ export const updateVolunteerRank = async (volunteerRanks) => {
     }
   );
   window.sessionStorage.setItem("user", JSON.stringify(reqst.data));
+  patchEvent();
   return reqst.data;
 };
