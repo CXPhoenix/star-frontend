@@ -1,0 +1,44 @@
+<script setup>
+import { defineProps } from "vue";
+import VerticalButton from "./VerticalButton.vue";
+
+/*
+type: str [required] 
+["alert", "check"]
+title: str
+content: str
+checkActivity: function [required]
+closeActivity: function
+*/
+const props = defineProps([
+  "type",
+  "title",
+  "content",
+  "checkActivity",
+  "closeActivity",
+]);
+const type = props.type;
+const title = props.title;
+const content = props.content;
+
+const closeActivity =
+  type === alert ? props.checkActivity : props.closeActivity;
+const checkActivity = props.checkActivity;
+</script>
+
+<template>
+  <div
+    class="flex w-full max-w-lg flex-col justify-between gap-5 rounded-md bg-blue-100 p-5"
+  >
+    <h2 class="">{{ title }}</h2>
+    <p class="">{{ content }}</p>
+    <div class="flex items-center justify-end gap-6">
+      <VerticalButton :buttonActivity="checkActivity">
+        <p class="p-1 text-center">確認</p>
+      </VerticalButton>
+      <VerticalButton :buttonActivity="closeActivity" v-if="type !== 'alert'">
+        <p class="p-1 text-center">取消</p>
+      </VerticalButton>
+    </div>
+  </div>
+</template>

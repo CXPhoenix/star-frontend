@@ -1,122 +1,50 @@
-<template>
-  <div class="h-screen w-screen space-y-10">
-    <TopNavBar @signOut="signOut" />
-    <div class="flex flex-col items-center gap-10 px-3">
-      <button
-        class="w-full rounded-md bg-gradient-to-b from-gray-100 to-gray-400 py-2 text-xl shadow-lg duration-100 hover:shadow-2xl sm:w-9/12 md:w-7/12 md:hover:scale-110"
-        v-for="(value, key) in options"
-        :key="key"
-        @click="optionSwitch(key)"
-        v-show="value.isOpen"
-      >
-        {{ value.text }}
-      </button>
-    </div>
-  </div>
-  <LoadingModal v-if="isLoading" />
-</template>
+<script setup>
+import JumpPageButton from "../components/JumpPageButton.vue";
+import VerticalButton from "../components/VerticalButton.vue";
 
-<script>
-import TopNavBar from "../components/TopNavBar.vue";
-import LoadingModal from "../componentSet/LoadingModal.vue";
-import { ref } from "vue";
-import {
-  isUpdateAspiredOpenTime,
-  starApplyExpiredTime,
-  updateAspiredExpiredTime,
-  url,
-} from "../utils";
-export default {
-  components: {
-    TopNavBar,
-    LoadingModal,
-  },
-  emits: ["signOut", "optionSwitch"],
-  setup(props, { emit }) {
-    const signOut = () => {
-      window.sessionStorage.clear();
-      emit("signOut");
-    };
-    if (isExpired()) {
-      signOut();
-    }
-    const isLoading = ref(true);
-    const options = {
-      checkRankPage: { isOpen: true, text: "查詢推薦順序" },
-      updateAspiredRankPage: {
-        isOpen: isUpdateAspiredOpenTime(updateAspiredExpiredTime),
-        text: "新增/修改預選志願學群",
-      },
-      checkRankApplyPage: {
-        isOpen: isUpdateAspiredOpenTime(starApplyExpiredTime),
-        text: "瀏覽/列印預選志願學群",
-      },
-      class8ValidsPage: { isOpen: true, text: "檢視合格的第八學群學系" },
-      updateApplyRankPage: { isOpen: true, text: "繁星推薦學系排序" },
-    };
+const user = JSON.parse(window.sessionStorage.getItem("user"));
 
-    const optionSwitch = (page) => {
-      emit("optionSwitch", page);
-    };
-    const authDatas = JSON.parse(window.sessionStorage.getItem("authData"));
-    const datas = {
-      examSignUpNum: "",
-      username: "",
-      schoolRank: "",
-      schoolSeq: "",
-      examChi: "",
-      examEn: "",
-      examMathA: "",
-      examMathB: "",
-      examMath: "",
-      examSoc: "",
-      examSci: "",
-      validDept: [],
-    };
-    const headers = new Headers();
-    headers.append("token", authDatas.token);
-    headers.append("Content-type", "application/json");
-    headers.append("Accept", "application/json");
-    const infoUrl = new URL("./user/me", url);
-    const fetchOptions = {
-      headers,
-      method: "GET",
-    };
-    if (!window.sessionStorage.getItem("userData")) {
-      fetch(infoUrl, fetchOptions)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          signOut();
-        })
-        .then((data) => {
-          for (let key in data) {
-            datas[key] = data[key];
-          }
-          authDatas.token = data.token;
-          window.sessionStorage.setItem("authData", JSON.stringify(authDatas));
-          window.sessionStorage.setItem("userData", JSON.stringify(data));
-        })
-        .catch((e) => console.log(e));
-    }
-    isLoading.value = false;
-
-    return {
-      signOut,
-      options,
-      isLoading,
-      optionSwitch,
-    };
-  },
+const getUserInfo = () => {
+  return [
+    [
+      "報名序號",
+      "姓名",
+      "校百分比",
+      "國文級分",
+      "英文級分",
+      "數Ａ級分",
+      "數Ｂ級分",
+      "社會級分",
+      "自然級分",
+      "推薦順序",
+    ],
+    [
+      user.account,
+      user.username,
+      ...user.studentGrades.slice(0, 7),
+      user.applyRank,
+    ],
+  ];
 };
-
-function isExpired() {
-  const datas = JSON.parse(window.sessionStorage.getItem("authData"));
-  const now = new Date().getTime() / 1000;
-  if (datas && now < datas.expired) return false;
-  return true;
-}
 </script>
 
-<style></style>
+<template>
+  <div
+    class="mx-auto flex w-full max-w-xl flex-col items-center justify-center gap-4 py-10 pt-14"
+  >
+    <div
+      class="grid w-full grid-cols-2 justify-items-stretch gap-8 text-xl"
+      v-for="(userInfoKey, index) in getUserInfo()[0]"
+      :key="index.toString().padStart(2, '0') + userInfoKey"
+    >
+      <p class="justify-self-end">{{ userInfoKey }}:</p>
+      <p class="justify-self-start">{{ getUserInfo()[1][index] }}</p>
+    </div>
+
+    <JumpPageButton
+      position="right"
+      content="新增/修改預選志願學群"
+      path="/user/apply-volunteer"
+    />
+  </div>
+</template>
