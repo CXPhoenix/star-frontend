@@ -50,3 +50,12 @@ export const updateVolunteerRank = async (volunteerRanks) => {
   patchEvent();
   return reqst.data;
 };
+
+export const getApplyPaperUrl = async () => {
+  const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
+  const accessToken = signInInfo.accessToken;
+  const reqst = await req.get("/pre-apply/get-apply-paper", {
+    headers: { "x-token": accessToken },
+  });
+  return reqst.data;
+};

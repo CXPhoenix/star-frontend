@@ -2,8 +2,19 @@
 import Gap from "../components/Gap.vue";
 import JumpPageButton from "../components/JumpPageButton.vue";
 import VerticalButton from "../components/VerticalButton.vue";
+import { getApplyPaperUrl } from "../utils/api";
+
 const user = JSON.parse(window.sessionStorage.getItem("user"));
 const volunteerRank = user.volunteerRank;
+
+const getApplyPaper = async () => {
+  const url = await getApplyPaperUrl();
+  console.log(url);
+  const a = document.createElement("a");
+  a.href = url;
+  a.setAttribute("target", "_black");
+  a.click();
+};
 </script>
 
 <template>
@@ -37,6 +48,7 @@ const volunteerRank = user.volunteerRank;
       bg-color="rgb(93, 210, 82)"
       class="w-full text-white"
       v-if="volunteerRank.length > 0"
+      @click="getApplyPaper"
     >
       <span class="">
         <font-awesome-icon icon="fa-solid fa-print" />
