@@ -1,6 +1,8 @@
 import Home from "../pages/Home.vue";
 import Nav from "../components/Nav.vue";
 import NotFound from "../pages/NotFound.vue";
+import SignInPage from "../pages/SignInPage.vue";
+import MenuPage from "../pages/MenuPage.vue";
 
 export const routes = [
   {
@@ -10,5 +12,13 @@ export const routes = [
   {
     path: "/",
     components: { default: Home },
+  },
+  {
+    path: "/sign-in",
+    components: { default: SignInPage },
+  },
+  {
+    path: "/menu",
+    components: { default: MenuPage, Nav },
   },
 ];
