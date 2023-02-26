@@ -37,5 +37,6 @@ export const updateVolunteerRank = async (volunteerRanks) => {
       headers: { "x-token": accessToken },
     }
   );
+  window.sessionStorage.setItem("user", JSON.stringify(reqst.data));
   return reqst.data;
 };
