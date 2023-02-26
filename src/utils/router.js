@@ -24,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
     return;
   }
   try {
-    const req = await getUser(signInInfo.accessToken);
+    await getUser(signInInfo.accessToken);
     next();
   } catch (e) {
     console.log(e);

@@ -1,6 +1,7 @@
 <script setup>
 import Gap from "../components/Gap.vue";
 import JumpPageButton from "../components/JumpPageButton.vue";
+import VerticalButton from "../components/VerticalButton.vue";
 const user = JSON.parse(window.sessionStorage.getItem("user"));
 const volunteerRank = user.volunteerRank;
 </script>
@@ -32,6 +33,16 @@ const volunteerRank = user.volunteerRank;
       </div>
     </div>
     <Gap />
+    <VerticalButton
+      bg-color="rgb(93, 210, 82)"
+      class="w-full text-white"
+      v-if="volunteerRank.length > 0"
+    >
+      <span class="">
+        <font-awesome-icon icon="fa-solid fa-print" />
+      </span>
+      <p class="">產生申請表</p>
+    </VerticalButton>
   </div>
   <JumpPageButton position="left" content="回到目錄" />
 </template>

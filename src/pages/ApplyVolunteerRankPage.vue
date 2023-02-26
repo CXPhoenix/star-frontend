@@ -1,6 +1,5 @@
 <script setup>
-import { reactive } from "vue";
-import { Container, Draggable } from "vue3-smooth-dnd";
+import { reactive, onMounted } from "vue";
 import Gap from "../components/Gap.vue";
 import { updateVolunteerRank, getUser } from "../utils/api";
 
@@ -13,17 +12,32 @@ const rank = reactive({
   volunteer: user.volunteerRank,
 });
 
-const onDrop = async (e) => {
-  const vR = rank.volunteer[e.removedIndex];
-  rank.volunteer.splice(e.removedIndex, 1);
-  rank.volunteer.splice(e.addedIndex, 0, vR);
-  const newUser = await updateVolunteerRank(rank.volunteer);
+const onUp = async (index) => {
+  const vR = rank.volunteer[index];
+  rank.volunteer.splice(index, 1);
+  rank.volunteer.splice(index - 1, 0, vR);
+  await updateVolunteerRank(rank.volunteer);
+};
+
+const onDown = async (index) => {
+  const vR = rank.volunteer[index];
+  rank.volunteer.splice(index, 1);
+  rank.volunteer.splice(index + 1, 0, vR);
+  await updateVolunteerRank(rank.volunteer);
 };
 
 const onDelete = async (index) => {
   rank.volunteer.splice(index, 1);
   await updateVolunteerRank(rank.volunteer);
 };
+
+onMounted(() => {
+  window.addEventListener("user-update", (e) => {
+    rank.volunteer = JSON.parse(
+      window.sessionStorage.getItem("user")
+    ).volunteerRank;
+  });
+});
 </script>
 
 <template>
@@ -47,11 +61,8 @@ const onDelete = async (index) => {
       <p class="">合格代表學系</p>
     </div>
 
-    <Container
-      @drop="onDrop"
-      class="max-h-[53vh] w-full overflow-auto py-3 lg:max-h-[58vh]"
-    >
-      <Draggable
+    <div class="max-h-[53vh] w-full overflow-auto py-3 lg:max-h-[58vh]">
+      <div
         class="border-b-2 py-3 text-center md:text-xl"
         v-for="(vR, index) in rank.volunteer"
         :key="vR.deptId"
@@ -62,7 +73,29 @@ const onDelete = async (index) => {
           <p class="">{{ vR.deptCategory }}</p>
           <p class="">{{ vR.deptName }}</p>
         </div>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-2">
+          <VerticalButton
+            bg-color="rgb(210,120,140)"
+            class="text-sm"
+            @click="onUp(index)"
+            v-if="index !== 0"
+          >
+            <span class="">
+              <font-awesome-icon icon="fa-solid fa-turn-up" />
+            </span>
+            <p class="">上移</p>
+          </VerticalButton>
+          <VerticalButton
+            bg-color="rgb(210,120,140)"
+            class="text-sm"
+            @click="onDown(index)"
+            v-if="index !== rank.volunteer.length - 1"
+          >
+            <span class="">
+              <font-awesome-icon icon="fa-solid fa-turn-down" />
+            </span>
+            <p class="">下移</p>
+          </VerticalButton>
           <VerticalButton
             bg-color="rgb(210,120,140)"
             class="text-sm"
@@ -74,21 +107,9 @@ const onDelete = async (index) => {
             <p class="">刪除</p>
           </VerticalButton>
         </div>
-      </Draggable>
-      <Gap />
-    </Container>
-    <!-- <div class="max-h-[53vh] w-full overflow-auto py-3 lg:max-h-[58vh]">
-      <div
-        class="grid w-full grid-cols-4 justify-items-stretch gap-x-4 border-b-2 py-3 text-center md:text-xl"
-        v-for="(vR, index) in volunteerRank"
-        :key="vR.deptId"
-      >
-        <p class="">{{ index + 1 }}</p>
-        <p class="">{{ vR.schoolName }}</p>
-        <p class="">{{ vR.deptCategory }}</p>
-        <p class="">{{ vR.deptName }}</p>
       </div>
-    </div> -->
+      <Gap />
+    </div>
   </div>
   <JumpPageButton
     content="確認/列印預選志願學群"
