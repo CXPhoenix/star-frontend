@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 import { Container, Draggable } from "vue3-smooth-dnd";
 import Gap from "../components/Gap.vue";
-import { updateVolunteerRank } from "../utils/api";
+import { updateVolunteerRank, getUser } from "../utils/api";
 
 import JumpPageButton from "../components/JumpPageButton.vue";
 import VerticalButton from "../components/VerticalButton.vue";

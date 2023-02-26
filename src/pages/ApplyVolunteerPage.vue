@@ -22,7 +22,7 @@ const dept = reactive({
 
 const getApplyDept = async (dept) => {
   user.volunteerRank.push(dept);
-  const updateData = updateVolunteerRank(user.volunteerRank);
+  await updateVolunteerRank(user.volunteerRank);
 };
 
 const deptFilter = () => {
