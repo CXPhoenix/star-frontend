@@ -1,15 +1,28 @@
 <script setup>
+import { reactive } from "vue";
 import InputArea from "../components/InputArea.vue";
 
 const tableHeaders = ["學系代碼", "大學名稱", "學群類別", "學系名稱"];
 const user = JSON.parse(window.sessionStorage.getItem("user"));
-const validDept = user.validDept;
+const dept = reactive({
+  valid: user.validDept,
+});
 
 const getApplyDept = (dept) => {
   console.log(dept);
 };
 
 const searchText = "";
+const deptFilter = () => {
+  dept.valid = user.validDept.filter(
+    (vd) =>
+      vd.schoolName.includes(searchText) &&
+      vd.deptCategory.includes(searchText) &&
+      vd.deptId.includes(searchText) &&
+      vd.deptName.includes(searchText)
+  );
+  console.log(dept.valid);
+};
 </script>
 
 <template>
@@ -22,6 +35,7 @@ const searchText = "";
         type="text"
         class="w-full pl-2 pr-4 text-lg outline-none ring-0"
         v-model="searchText"
+        @input="deptFilter"
       />
     </div>
     <div
@@ -38,7 +52,7 @@ const searchText = "";
     <div class="w-full overflow-auto py-3 lg:max-h-[70vh]">
       <router-link
         class="grid w-full grid-cols-4 justify-items-stretch gap-x-4 border-b-2 py-4 text-center md:text-xl"
-        v-for="vD in validDept"
+        v-for="vD in dept.valid"
         :key="vD.deptId"
         to="/user/apply-volunteer"
         @click="getApplyDept(vD)"
