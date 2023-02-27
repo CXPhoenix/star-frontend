@@ -31,8 +31,7 @@ import VerticalButton from "../components/VerticalButton.vue";
       <div class="text-lg">
         <h3 class="font-bold">新增/修改預選志願學群</h3>
         <p class="">
-          選擇學群學系時請特別注意，不要弄錯。最重要的是，每次做完請務必按下【
-          儲存志願 】按鈕
+          選擇學群學系時請特別注意，不要弄錯。本系統會自動幫你把已經選過的學校學群都一起篩選，因此注意你選擇的校系為【學校學群代表校系】
         </p>
       </div>
       <div class="text-lg">
