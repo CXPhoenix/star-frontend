@@ -30,13 +30,13 @@ const checkActivity = props.checkActivity;
   <div
     class="flex w-full max-w-lg flex-col justify-between gap-5 rounded-md bg-blue-100 p-5"
   >
-    <h2 class="">{{ title }}</h2>
-    <p class="">{{ content }}</p>
+    <h2 class="text-xl">{{ title }}</h2>
+    <p class="text-md">{{ content }}</p>
     <div class="flex items-center justify-end gap-6">
-      <VerticalButton :buttonActivity="checkActivity">
+      <VerticalButton @click="checkActivity">
         <p class="p-1 text-center">確認</p>
       </VerticalButton>
-      <VerticalButton :buttonActivity="closeActivity" v-if="type !== 'alert'">
+      <VerticalButton @click="closeActivity" v-if="type !== 'alert'">
         <p class="p-1 text-center">取消</p>
       </VerticalButton>
     </div>
