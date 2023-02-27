@@ -85,6 +85,7 @@ const dismissAlert = () => {
       title="下載被阻擋提醒"
       :content="alertContent"
       :check-activity="dismissAlert"
+      class="mx-auto"
     />
   </Model>
 </template>
