@@ -11,7 +11,7 @@ const getApplyPaper = async () => {
   const url = await getApplyPaperUrl();
   console.log(url);
   const a = document.createElement("a");
-  a.href = url;
+  a.href = url.applyPaperUrl;
   a.setAttribute("target", "_black");
   a.click();
 };
