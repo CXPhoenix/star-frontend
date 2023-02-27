@@ -52,6 +52,6 @@ import VerticalButton from "../components/VerticalButton.vue";
         <p class="text-white">我知道了！</p>
       </VerticalButton>
     </router-link>
+    <Gap />
   </div>
-  <Gap />
 </template>
