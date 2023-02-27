@@ -22,7 +22,6 @@ const dept = reactive({
 });
 
 const getApplyDept = async (dept) => {
-  console.log(dept);
   rank.volunteer.push(dept);
   await updateVolunteerRank(rank.volunteer);
 };

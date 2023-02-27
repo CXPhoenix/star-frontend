@@ -46,7 +46,7 @@ export const getUser = async (accessToken) => {
 export const updateVolunteerRank = async (volunteerRanks) => {
   const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
   const accessToken = signInInfo.accessToken;
-  console.log(volunteerRanks);
+
   const reqst = await req.post(
     "/pre-apply/volunteer-rank",
     { userRanking: volunteerRanks },
@@ -54,7 +54,7 @@ export const updateVolunteerRank = async (volunteerRanks) => {
       headers: { "x-token": accessToken },
     }
   );
-  console.log(reqst.data);
+
   sessionStorage.setItem("user", JSON.stringify(reqst.data));
   patchEvent();
   return reqst.data;

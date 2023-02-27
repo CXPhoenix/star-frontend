@@ -26,7 +26,6 @@ router.beforeEach(async (to, from, next) => {
   }
   try {
     const user = await getUser(signInInfo.accessToken);
-    console.log(rank);
     next();
   } catch (e) {
     console.log(e);
