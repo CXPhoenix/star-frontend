@@ -5,11 +5,15 @@ const req = axios.create({
 });
 
 const patchEvent = () => {
-  window.dispatchEvent(new CustomEvent("user-update"), {
-    detail: {
-      storage: window.sessionStorage.getItem("user"),
-    },
-  });
+  window.dispatchEvent(
+    new CustomEvent("user-update", {
+      bubbles: false,
+      cancelable: false,
+      detail: {
+        storage: JSON.parse(sessionStorage.getItem("user")),
+      },
+    })
+  );
 };
 
 export const getSignIn = async (account, password) => {
@@ -30,15 +34,19 @@ export const getUser = async (accessToken) => {
   const data = await req.get("/user/me", {
     headers: { "x-token": accessToken },
   });
+  if (!sessionStorage.getItem("user-init")) {
+    sessionStorage.setItem("user", JSON.stringify(data.data));
+    sessionStorage.setItem("user-init", "true");
+    patchEvent();
+  }
 
-  window.sessionStorage.setItem("user", JSON.stringify(data.data));
-  patchEvent();
   return data.data;
 };
 
 export const updateVolunteerRank = async (volunteerRanks) => {
   const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
   const accessToken = signInInfo.accessToken;
+  console.log(volunteerRanks);
   const reqst = await req.post(
     "/pre-apply/volunteer-rank",
     { userRanking: volunteerRanks },
@@ -46,7 +54,8 @@ export const updateVolunteerRank = async (volunteerRanks) => {
       headers: { "x-token": accessToken },
     }
   );
-  window.sessionStorage.setItem("user", JSON.stringify(reqst.data));
+  console.log(reqst.data);
+  sessionStorage.setItem("user", JSON.stringify(reqst.data));
   patchEvent();
   return reqst.data;
 };

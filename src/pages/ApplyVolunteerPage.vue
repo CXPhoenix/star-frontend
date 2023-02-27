@@ -3,6 +3,7 @@ import { reactive } from "vue";
 import InputArea from "../components/InputArea.vue";
 import VerticalButton from "../components/VerticalButton.vue";
 import { updateVolunteerRank } from "../utils/api.js";
+import { rank } from "../utils/status.js";
 
 const tableHeaders = ["學系代碼", "大學名稱", "學群類別", "學系名稱"];
 const user = JSON.parse(window.sessionStorage.getItem("user"));
@@ -11,7 +12,7 @@ const dept = reactive({
   valid: [
     ...user.validDept.filter(
       (vd) =>
-        !user.volunteerRank.find(
+        !rank.volunteer.find(
           (vr) =>
             vd.schoolId === vr.schoolId && vd.deptCategory === vr.deptCategory
         )
@@ -21,8 +22,9 @@ const dept = reactive({
 });
 
 const getApplyDept = async (dept) => {
-  user.volunteerRank.push(dept);
-  await updateVolunteerRank(user.volunteerRank);
+  console.log(dept);
+  rank.volunteer.push(dept);
+  await updateVolunteerRank(rank.volunteer);
 };
 
 const deptFilter = () => {
@@ -32,7 +34,7 @@ const deptFilter = () => {
   dept.valid = [
     ...dept.valid.filter(
       (vd) =>
-        !user.volunteerRank.find(
+        !rank.volunteer.find(
           (vr) =>
             vd.schoolId === vr.schoolId && vd.deptCategory === vr.deptCategory
         )

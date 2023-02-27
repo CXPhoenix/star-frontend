@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes.js";
 import { getUser } from "./api.js";
+import { rank } from "./status";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -24,7 +25,8 @@ router.beforeEach(async (to, from, next) => {
     return;
   }
   try {
-    await getUser(signInInfo.accessToken);
+    const user = await getUser(signInInfo.accessToken);
+    console.log(rank);
     next();
   } catch (e) {
     console.log(e);

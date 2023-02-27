@@ -2,15 +2,14 @@
 import { reactive, onMounted } from "vue";
 import Gap from "../components/Gap.vue";
 import { updateVolunteerRank, getUser } from "../utils/api";
+import { rank } from "../utils/status.js";
 
 import JumpPageButton from "../components/JumpPageButton.vue";
 import VerticalButton from "../components/VerticalButton.vue";
 
-const user = JSON.parse(window.sessionStorage.getItem("user"));
-
-const rank = reactive({
-  volunteer: user.volunteerRank,
-});
+// const rank = reactive({
+//   volunteer: user.volunteerRank,
+// });
 
 const onUp = async (index) => {
   const vR = rank.volunteer[index];
@@ -31,13 +30,12 @@ const onDelete = async (index) => {
   await updateVolunteerRank(rank.volunteer);
 };
 
-onMounted(() => {
-  window.addEventListener("user-update", (e) => {
-    rank.volunteer = JSON.parse(
-      window.sessionStorage.getItem("user")
-    ).volunteerRank;
-  });
-});
+// onMounted(() => {
+//   window.addEventListener("user-update", (e) => {
+//     console.log(e);
+//     rank.volunteer = e.detail.storage.volunteerRank;
+//   });
+// });
 </script>
 
 <template>
