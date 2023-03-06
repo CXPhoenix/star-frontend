@@ -8,6 +8,7 @@ import ApplyVolunteerRankPage from "../pages/ApplyVolunteerRankPage.vue";
 import CheckVolunteerRankPage from "../pages/CheckVolunteerRankPage.vue";
 import CheckValidDept8Page from "../pages/CheckValidDept8Page.vue";
 import ApplyVolunteerPage from "../pages/ApplyVolunteerPage.vue";
+import WatchPage from "../pages/WatchPage.vue";
 
 export const routes = [
   {
@@ -46,5 +47,9 @@ export const routes = [
   {
     path: "/apply",
     component: ApplyVolunteerPage,
+  },
+  {
+    path: "/watch",
+    components: { default: WatchPage, Nav },
   },
 ];
