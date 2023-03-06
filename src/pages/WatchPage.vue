@@ -158,7 +158,7 @@ onMounted(() => {
           class="w-full rounded-md border-2 border-gray-400 py-2 pl-4 pr-2"
           v-model="deptApplyDatas.searchText"
           @input="deptApplyDatas.filterFunc"
-          placeholder="可以根據學校代碼、學校名稱或學群類別進行搜尋..."
+          placeholder="可以根據大學代碼、大學名稱或學群類別進行搜尋..."
         />
       </div>
       <div class="grid grid-cols-5 items-center border-b-2 border-b-gray-500">
