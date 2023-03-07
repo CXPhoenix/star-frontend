@@ -1,7 +1,14 @@
 <script setup>
-import { reactive, onMounted, onUnmounted } from "vue";
+import { reactive, onMounted } from "vue";
+
+import Loading from "../components/Loading.vue";
+import Model from "../components/Model.vue";
 
 import VerticalButton from "../components/VerticalButton.vue";
+
+const model = reactive({
+  on: true,
+});
 
 const stuApplyDatas = reactive({
   value: [],
@@ -81,6 +88,9 @@ onMounted(() => {
       "deptApplyDatas",
       JSON.stringify(deptApplyDatas.value)
     );
+    stuApplyDatas.filterFunc();
+    deptApplyDatas.filterFunc();
+    model.on = false;
   };
 });
 </script>
@@ -113,6 +123,7 @@ onMounted(() => {
         學生推薦狀況
       </VerticalButton>
     </div>
+
     <div class="py-6" v-if="stuApplyDatas.stuApplyShow">
       <div class="py-3">
         <input
@@ -132,7 +143,8 @@ onMounted(() => {
           {{ header }}
         </p>
       </div>
-      <div
+      <router-link
+        :to="`/watch/${data.account}`"
         class="grid grid-cols-7 items-center border-b-2 border-b-gray-300 pt-4 text-center"
         v-for="data in stuApplyDatas.value"
         :key="data.account"
@@ -149,8 +161,9 @@ onMounted(() => {
         <p class="p-1">{{ data.applyResult.deptCategory }}</p>
         <p class="p-1">{{ data.applyResult.deptId }}</p>
         <p class="p-1">{{ data.applyResult.deptName }}</p>
-      </div>
+      </router-link>
     </div>
+
     <div class="py-6" v-if="deptApplyDatas.deptApplyShow">
       <div class="py-3">
         <input
@@ -209,4 +222,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <Model v-if="model.on">
+    <Loading />
+  </Model>
 </template>

@@ -9,12 +9,12 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.path === "/watch") {
+  if (to.path.startsWith("/watch")) {
     next();
     return;
   }
 
-  if (to.path === "/sign-in" || to.path === "/") {
+  if (to.path === "/sign-in" || to.path === "/" || to.path === "/404") {
     next();
     return;
   }

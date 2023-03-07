@@ -9,11 +9,13 @@ import CheckVolunteerRankPage from "../pages/CheckVolunteerRankPage.vue";
 import CheckValidDept8Page from "../pages/CheckValidDept8Page.vue";
 import ApplyVolunteerPage from "../pages/ApplyVolunteerPage.vue";
 import WatchPage from "../pages/WatchPage.vue";
+import WatchPersonalRankPage from "../pages/WatchPersonalRankPage.vue";
 
 export const routes = [
   {
     path: "/:pathMatch(.*)*",
     components: { default: NotFound },
+    alias: "/404",
   },
   {
     path: "/",
@@ -51,5 +53,9 @@ export const routes = [
   {
     path: "/watch",
     components: { default: WatchPage, Nav },
+  },
+  {
+    path: "/watch/:stuAccount",
+    component: WatchPersonalRankPage,
   },
 ];
