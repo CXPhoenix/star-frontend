@@ -10,6 +10,8 @@ import CheckValidDept8Page from "../pages/CheckValidDept8Page.vue";
 import ApplyVolunteerPage from "../pages/ApplyVolunteerPage.vue";
 import WatchPage from "../pages/WatchPage.vue";
 import WatchPersonalRankPage from "../pages/WatchPersonalRankPage.vue";
+import ApplyValidRankPage from "../pages/ApplyValidRankPage.vue";
+import ApplyValidPage from "../pages/ApplyValidPage.vue";
 
 export const routes = [
   {
@@ -57,5 +59,13 @@ export const routes = [
   {
     path: "/watch/:stuAccount",
     component: WatchPersonalRankPage,
+  },
+  {
+    path: "/user/apply-star-rank",
+    components: { default: ApplyValidRankPage, Nav },
+  },
+  {
+    path: "/apply-star",
+    component: ApplyValidPage,
   },
 ];

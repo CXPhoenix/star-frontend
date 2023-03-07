@@ -18,6 +18,18 @@ const patchEvent = () => {
   );
 };
 
+const patchStarEvent = () => {
+  window.dispatchEvent(
+    new CustomEvent("star-update", {
+      bubbles: false,
+      cancelable: false,
+      detail: {
+        storage: JSON.parse(sessionStorage.getItem("user")),
+      },
+    })
+  );
+};
+
 export const getSignIn = async (account, password) => {
   const reqst = await req.post("/user/sign-in", {
     account,
@@ -40,6 +52,7 @@ export const getUser = async (accessToken) => {
     sessionStorage.setItem("user", JSON.stringify(data.data));
     sessionStorage.setItem("user-init", "true");
     patchEvent();
+    patchStarEvent();
   }
 
   return data.data;
@@ -59,6 +72,23 @@ export const updateVolunteerRank = async (volunteerRanks) => {
 
   sessionStorage.setItem("user", JSON.stringify(reqst.data));
   patchEvent();
+  return reqst.data;
+};
+
+export const updateApplyDeptRank = async (applyDeptRanks) => {
+  const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
+  const accessToken = signInInfo.accessToken;
+
+  const reqst = await req.post(
+    "/post-apply/apply-dept-rank",
+    { applyDepts: applyDeptRanks },
+    {
+      headers: { "x-token": accessToken },
+    }
+  );
+
+  sessionStorage.setItem("user", JSON.stringify(reqst.data));
+  patchStarEvent();
   return reqst.data;
 };
 

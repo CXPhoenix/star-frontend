@@ -1,5 +1,8 @@
 <script setup>
+import { reactive } from "vue";
 import VerticalButton from "../components/VerticalButton.vue";
+
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 const menus = [
   {
@@ -33,6 +36,15 @@ const menus = [
     >
       <VerticalButton bg-color="#ecdabf" class="w-full shadow-lg">
         <p class="text-center text-2xl">{{ menu.content }}</p>
+      </VerticalButton>
+    </router-link>
+    <router-link
+      to="/user/apply-star-rank"
+      class="w-full"
+      v-if="user.applyResult.schoolId !== undefined"
+    >
+      <VerticalButton bg-color="#ecdabf" class="w-full shadow-lg">
+        <p class="text-center text-2xl">繁星推薦學系排序</p>
       </VerticalButton>
     </router-link>
   </div>
