@@ -6,6 +6,8 @@ import Model from "../components/Model.vue";
 
 import VerticalButton from "../components/VerticalButton.vue";
 
+import { wsUrl } from "../utils/api.js";
+
 const model = reactive({
   on: true,
 });
@@ -65,7 +67,7 @@ const switchShow = (switchTo) => {
 };
 
 onMounted(() => {
-  const ws = new WebSocket("wss://star.fhsh.tp.edu.tw/api/dev/apply/ws");
+  const ws = new WebSocket(wsUrl);
   ws.onmessage = (e) => {
     const allData = JSON.parse(e.data);
     if (allData.updateStudentApplyData !== undefined) {

@@ -4,6 +4,8 @@ const req = axios.create({
   baseURL: "https://star.fhsh.tp.edu.tw/api",
 });
 
+export const wsUrl = "wss://star.fhsh.tp.edu.tw/api/apply/ws";
+
 const patchEvent = () => {
   window.dispatchEvent(
     new CustomEvent("user-update", {
