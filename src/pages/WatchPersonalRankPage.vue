@@ -22,7 +22,14 @@ const model = reactive({
 
 const deptsApplyData = reactive({
   value: [],
-  tableHeader: ["大學代碼", "大學名稱", "大學已推薦數", "學群類別", "報名狀況"],
+  tableHeader: [
+    "大學代碼",
+    "大學名稱",
+    "該大學已推薦數",
+    "學群類別",
+    "學群已推薦數",
+    "報名狀況",
+  ],
 });
 
 onMounted(() => {
@@ -55,15 +62,31 @@ onMounted(() => {
     stuApplyData.value = [...afterFilter][0];
     sessionStorage.setItem("stuApplyData", JSON.stringify(stuApplyData.value));
 
-    const afterFilterDept = tempDeptApplyDatas.filter((tdad) =>
-      stuApplyData.value.volunteerRank.find(
-        (vdr) =>
-          tdad.schoolId === vdr.schoolId &&
-          tdad.deptCategory === vdr.deptCategory
-      )
-    );
+    tempDeptApplyDatas.forEach((tdad, i) => {
+      const temp = [
+        ...tempDeptApplyDatas.filter((d) => d.schoolId === tdad.schoolId),
+      ];
+      const schoolLimit = temp.length * 2;
+      let schoolNowAppliedNumber = 0;
+      temp.forEach((t) => {
+        schoolNowAppliedNumber += t.studentsApplied.length;
+      });
+      tempDeptApplyDatas[i].schoolLimit = schoolLimit;
+      tempDeptApplyDatas[i].schoolNowAppliedNumber = schoolNowAppliedNumber;
+    });
+
+    const afterFilterDept = [];
+    stuApplyData.value.volunteerRank.forEach((vr) => {
+      const i = tempDeptApplyDatas.findIndex(
+        (tdad) =>
+          tdad.schoolName === vr.schoolName &&
+          tdad.deptCategory === vr.deptCategory
+      );
+      afterFilterDept.push(tempDeptApplyDatas[i]);
+    });
 
     deptsApplyData.value = [...afterFilterDept];
+
     sessionStorage.setItem(
       "deptsApplyData",
       JSON.stringify(deptsApplyData.value)
@@ -88,11 +111,14 @@ onMounted(() => {
         />
       </div> -->
       <h3 class="pb-4 text-center text-2xl" v-if="stuApplyData.value.username">
-        {{ stuApplyData.value.schoolClass + stuApplyData.value.classSeat }}
+        {{
+          stuApplyData.value.schoolClass +
+          stuApplyData.value.classSeat.toString().padStart(2, "0")
+        }}
         {{ stuApplyData.value.username }}
         志願查詢
       </h3>
-      <div class="grid grid-cols-5 items-center border-b-2 border-b-gray-500">
+      <div class="grid grid-cols-6 items-center border-b-2 border-b-gray-500">
         <p
           class="p-1 text-center"
           v-for="(header, index) in deptsApplyData.tableHeader"
@@ -102,18 +128,25 @@ onMounted(() => {
         </p>
       </div>
       <div
-        class="grid grid-cols-5 items-center border-b-2 border-b-gray-300 pt-3 text-center"
+        class="grid grid-cols-6 items-center border-b-2 border-b-gray-300 pt-3 text-center"
         v-for="data in deptsApplyData.value"
         :key="data.account"
       >
         <p class="p-1">{{ data.schoolId }}</p>
         <p class="p-1">{{ data.schoolName }}</p>
-        <p class="p-1">{{ data.studentsApplied.length }}</p>
+        <p class="p-1">{{ data.schoolNowAppliedNumber }}</p>
         <p class="p-1">{{ data.deptCategory }}</p>
+        <p class="p-1" v-if="data.studentsApplied.length < 2">
+          {{ data.studentsApplied.length }}
+        </p>
+        <p class="p-1 text-red-500" v-if="data.studentsApplied.length >= 2">
+          額滿
+        </p>
+
         <p class="p-3">
           <label
             :for="data.schoolId + data.deptCategory"
-            class="rounded-lg bg-green-700 p-1 text-white"
+            class="rounded-lg bg-green-700 p-1 text-xs text-white sm:text-base"
           >
             查看
           </label>
@@ -125,16 +158,22 @@ onMounted(() => {
           class="peer hidden"
         />
         <div
-          class="col-span-5 hidden justify-self-stretch border-t-2 border-t-gray-200 pt-2 peer-checked:block"
+          class="col-span-6 hidden justify-self-stretch border-t-2 border-t-gray-200 pt-2 peer-checked:block"
         >
           <p
-            class="grid grid-cols-5 items-center text-center"
+            class="grid grid-cols-6 items-center text-center"
             v-for="(stu, index) in data.studentsApplied"
             :key="stu.schoolClass + stu.classSeat + stu.username"
           >
             <span class="">序號{{ index + 1 }}</span>
-            <span class="">{{ stu.schoolClass + stu.classSeat }}</span>
+            <span class="">{{
+              stu.schoolClass + stu.classSeat.toString().padStart(2, "0")
+            }}</span>
             <span class="">{{ stu.username }}</span>
+            <span class="col-span-3">
+              {{ data.schoolName }} 排序
+              {{ stu.applyResult.applyDeptSeq }}
+            </span>
           </p>
         </div>
       </div>

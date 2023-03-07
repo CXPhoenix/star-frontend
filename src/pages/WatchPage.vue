@@ -41,7 +41,14 @@ const stuApplyDatas = reactive({
 const deptApplyDatas = reactive({
   value: [],
   deptApplyShow: false,
-  tableHeader: ["大學代碼", "大學名稱", "大學已推薦數", "學群類別", "報名狀況"],
+  tableHeader: [
+    "大學代碼",
+    "大學名稱",
+    "該大學已推薦數",
+    "學群類別",
+    "學群已推薦數",
+    "報名狀況",
+  ],
   searchText: "",
   filterFunc: () => {
     deptApplyDatas.value = [
@@ -70,6 +77,7 @@ onMounted(() => {
   const ws = new WebSocket(wsUrl);
   ws.onmessage = (e) => {
     const allData = JSON.parse(e.data);
+    console.log(allData);
     if (allData.updateStudentApplyData !== undefined) {
       stuApplyDatas.value = [...allData.updateStudentApplyData.result];
     }
@@ -82,6 +90,20 @@ onMounted(() => {
     if (allData.deptApplyDatas !== undefined) {
       deptApplyDatas.value = [...allData.deptApplyDatas];
     }
+
+    deptApplyDatas.value.forEach((dad, i) => {
+      const temp = [
+        ...deptApplyDatas.value.filter((d) => d.schoolId === dad.schoolId),
+      ];
+      const schoolLimit = temp.length * 2;
+      let schoolNowAppliedNumber = 0;
+      temp.forEach((t) => {
+        schoolNowAppliedNumber += t.studentsApplied.length;
+      });
+      deptApplyDatas.value[i].schoolLimit = schoolLimit;
+      deptApplyDatas.value[i].schoolNowAppliedNumber = schoolNowAppliedNumber;
+    });
+
     sessionStorage.setItem(
       "stuApplyDatas",
       JSON.stringify(stuApplyDatas.value)
@@ -176,7 +198,7 @@ onMounted(() => {
           placeholder="可以根據大學代碼、大學名稱或學群類別進行搜尋..."
         />
       </div>
-      <div class="grid grid-cols-5 items-center border-b-2 border-b-gray-500">
+      <div class="grid grid-cols-6 items-center border-b-2 border-b-gray-500">
         <p
           class="p-1 text-center"
           v-for="(header, index) in deptApplyDatas.tableHeader"
@@ -186,18 +208,35 @@ onMounted(() => {
         </p>
       </div>
       <div
-        class="grid grid-cols-5 items-center border-b-2 border-b-gray-300 pt-3 text-center"
+        class="grid grid-cols-6 items-center border-b-2 border-b-gray-300 pt-3 text-center"
         v-for="data in deptApplyDatas.value"
         :key="data.account"
       >
         <p class="p-1">{{ data.schoolId }}</p>
         <p class="p-1">{{ data.schoolName }}</p>
-        <p class="p-1">{{ data.studentsApplied.length }}</p>
+
+        <p class="p-1" v-if="data.schoolNowAppliedNumber < data.schoolLimit">
+          {{ data.schoolNowAppliedNumber }}
+        </p>
+        <p
+          class="p-1 text-red-500"
+          v-if="data.schoolNowAppliedNumber >= data.schoolLimit"
+        >
+          額滿
+        </p>
+
         <p class="p-1">{{ data.deptCategory }}</p>
+
+        <p class="p-1" v-if="data.studentsApplied.length < 2">
+          {{ data.studentsApplied.length }}
+        </p>
+        <p class="p-1 text-red-500" v-if="data.studentsApplied.length >= 2">
+          額滿
+        </p>
         <p class="p-3">
           <label
             :for="data.schoolId + data.deptCategory"
-            class="rounded-lg bg-green-700 p-1 text-white"
+            class="rounded-lg bg-green-700 p-1 text-xs text-white sm:text-base"
           >
             查看
           </label>
@@ -209,16 +248,20 @@ onMounted(() => {
           class="peer hidden"
         />
         <div
-          class="col-span-5 hidden justify-self-stretch border-t-2 border-t-gray-200 pt-2 peer-checked:block"
+          class="col-span-6 hidden justify-self-stretch border-t-2 border-t-gray-200 pt-2 peer-checked:block"
         >
           <p
-            class="grid grid-cols-5 items-center text-center"
+            class="grid grid-cols-6 items-center text-center"
             v-for="(stu, index) in data.studentsApplied"
             :key="stu.schoolClass + stu.classSeat + stu.username"
           >
             <span class="">序號{{ index + 1 }}</span>
             <span class="">{{ stu.schoolClass + stu.classSeat }}</span>
             <span class="">{{ stu.username }}</span>
+            <span class="col-span-3">
+              {{ data.schoolName }}排序
+              {{ stu.applyResult.applyDeptSeq }}
+            </span>
           </p>
         </div>
       </div>
