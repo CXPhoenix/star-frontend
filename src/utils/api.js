@@ -4,7 +4,7 @@ const req = axios.create({
   baseURL: "https://star.fhsh.tp.edu.tw/api",
 });
 
-export const wsUrl = "wss://star.fhsh.tp.edu.tw/api/apply/ws";
+// export const wsUrl = "wss://star.fhsh.tp.edu.tw/api/apply/ws";
 
 const patchEvent = () => {
   window.dispatchEvent(
@@ -98,5 +98,10 @@ export const getApplyPaperUrl = async () => {
   const reqst = await req.get("/pre-apply/get-apply-paper", {
     headers: { "x-token": accessToken },
   });
+  return reqst.data;
+};
+
+export const getApplyResultUrl = async () => {
+  const reqst = await req.get("/apply/apply-results");
   return reqst.data;
 };

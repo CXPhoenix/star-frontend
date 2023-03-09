@@ -8,8 +8,8 @@ import ApplyVolunteerRankPage from "../pages/ApplyVolunteerRankPage.vue";
 import CheckVolunteerRankPage from "../pages/CheckVolunteerRankPage.vue";
 import CheckValidDept8Page from "../pages/CheckValidDept8Page.vue";
 import ApplyVolunteerPage from "../pages/ApplyVolunteerPage.vue";
-import WatchPage from "../pages/WatchPage.vue";
-import WatchPersonalRankPage from "../pages/WatchPersonalRankPage.vue";
+import WatchPage_polling_version from "../pages/WatchPage_polling_version.vue";
+import WatchPersonalRankPage_polling_version from "../pages/WatchPersonalRankPage_polling_version.vue";
 import ApplyValidRankPage from "../pages/ApplyValidRankPage.vue";
 import ApplyValidPage from "../pages/ApplyValidPage.vue";
 
@@ -54,11 +54,11 @@ export const routes = [
   },
   {
     path: "/watch",
-    components: { default: WatchPage, Nav },
+    components: { default: WatchPage_polling_version, Nav },
   },
   {
     path: "/watch/:stuAccount",
-    component: WatchPersonalRankPage,
+    component: WatchPersonalRankPage_polling_version,
   },
   {
     path: "/user/apply-star-rank",
