@@ -6,19 +6,50 @@ import logo from "../assets/celebrate-70-logo.png";
 
 import { getSignIn } from "../utils/api.js";
 import router from "../utils/router.js";
+import Model from "../components/Model.vue";
+import Alert from "../components/Alert.vue";
 
 const signInInfo = reactive({
   account: "",
   password: "",
 });
 
+const alert = reactive({
+  isAlert: true,
+  title: "",
+  content: "",
+  type: "alert",
+  dismiss: () => {
+    alert.isAlert = true;
+  },
+});
+
 const signIn = async () => {
   if (signInInfo.account === "" || signInInfo.password === "") {
-    alert("請填入帳號密碼");
+    alert.title = "帳號密碼錯誤";
+    alert.content = "帳號密碼沒有填寫完整";
+    alert.isAlert = false;
   }
-  const signInData = await getSignIn(signInInfo.account, signInInfo.password);
-  alert(`你好 ${signInData.username}`);
-  router.push("/user/menu");
+  try {
+    const signInData = await getSignIn(signInInfo.account, signInInfo.password);
+    alert.title = "歡迎登入";
+    alert.content = `歡迎回來 ${signInData.username}`;
+    alert.isAlert = false;
+    alert.dismiss = () => {
+      alert.isAlert = true;
+      router.push("/user/menu");
+      alert.dismiss = () => {
+        alert.isAlert = true;
+      };
+    };
+    signInInfo.account = "";
+    signInInfo.password = "";
+  } catch (e) {
+    console.log(e);
+    alert.title = "帳號密碼有誤";
+    alert.content = "你填寫的帳號密碼有錯誤，請再試一次";
+    alert.isAlert = false;
+  }
 };
 </script>
 
@@ -54,4 +85,13 @@ const signIn = async () => {
       </div>
     </div>
   </div>
+  <Model v-if="!alert.isAlert">
+    <Alert
+      :type="alert.type"
+      :title="alert.title"
+      :content="alert.content"
+      :check-activity="alert.dismiss"
+      class="mx-auto"
+    />
+  </Model>
 </template>

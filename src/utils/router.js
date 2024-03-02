@@ -9,7 +9,12 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.path === "/sign-in" || to.path === "/") {
+  if (to.path.startsWith("/watch")) {
+    next();
+    return;
+  }
+
+  if (to.path === "/sign-in" || to.path === "/" || to.path === "/404") {
     next();
     return;
   }
@@ -26,12 +31,15 @@ router.beforeEach(async (to, from, next) => {
   }
   try {
     const user = await getUser(signInInfo.accessToken);
-    console.log(rank);
     next();
   } catch (e) {
     console.log(e);
     next({ path: "/sign-in" });
   }
+});
+
+router.afterEach((to, from) => {
+  window.scrollTo(0, 0);
 });
 
 export default router;

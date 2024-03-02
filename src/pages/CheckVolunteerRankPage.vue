@@ -1,19 +1,38 @@
 <script setup>
+import { reactive } from "vue";
+import Alert from "../components/Alert.vue";
 import Gap from "../components/Gap.vue";
 import JumpPageButton from "../components/JumpPageButton.vue";
+import Loading from "../components/Loading.vue";
+import Model from "../components/Model.vue";
 import VerticalButton from "../components/VerticalButton.vue";
 import { getApplyPaperUrl } from "../utils/api";
 
 const user = JSON.parse(window.sessionStorage.getItem("user"));
 const volunteerRank = user.volunteerRank;
 
+const loading = reactive({
+  isFin: true,
+  isAlert: true,
+});
+
+const alertContent = `如果沒有自動下載，請確認右上角的彈出視窗是否被封鎖。請將彈出視窗調整成允許，並在重新下載一次。
+若是已經下載，則請略過此則提醒。
+`;
+
 const getApplyPaper = async () => {
+  loading.isFin = false;
   const url = await getApplyPaperUrl();
-  console.log(url);
   const a = document.createElement("a");
-  a.href = url;
+  a.href = url.applyPaperUrl;
   a.setAttribute("target", "_black");
+  loading.isFin = true;
   a.click();
+  loading.isAlert = false;
+};
+
+const dismissAlert = () => {
+  loading.isAlert = true;
 };
 </script>
 
@@ -57,4 +76,16 @@ const getApplyPaper = async () => {
     </VerticalButton>
   </div>
   <JumpPageButton position="left" content="回到目錄" />
+  <Model v-if="!loading.isFin">
+    <Loading />
+  </Model>
+  <Model v-if="!loading.isAlert">
+    <Alert
+      type="alert"
+      title="下載被阻擋提醒"
+      :content="alertContent"
+      :check-activity="dismissAlert"
+      class="mx-auto"
+    />
+  </Model>
 </template>

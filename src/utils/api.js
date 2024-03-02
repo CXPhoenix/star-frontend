@@ -4,9 +4,23 @@ const req = axios.create({
   baseURL: "https://star.fhsh.tp.edu.tw/api",
 });
 
+// export const wsUrl = "wss://star.fhsh.tp.edu.tw/api/apply/ws";
+
 const patchEvent = () => {
   window.dispatchEvent(
     new CustomEvent("user-update", {
+      bubbles: false,
+      cancelable: false,
+      detail: {
+        storage: JSON.parse(sessionStorage.getItem("user")),
+      },
+    })
+  );
+};
+
+const patchStarEvent = () => {
+  window.dispatchEvent(
+    new CustomEvent("star-update", {
       bubbles: false,
       cancelable: false,
       detail: {
@@ -38,6 +52,7 @@ export const getUser = async (accessToken) => {
     sessionStorage.setItem("user", JSON.stringify(data.data));
     sessionStorage.setItem("user-init", "true");
     patchEvent();
+    patchStarEvent();
   }
 
   return data.data;
@@ -46,7 +61,7 @@ export const getUser = async (accessToken) => {
 export const updateVolunteerRank = async (volunteerRanks) => {
   const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
   const accessToken = signInInfo.accessToken;
-  console.log(volunteerRanks);
+
   const reqst = await req.post(
     "/pre-apply/volunteer-rank",
     { userRanking: volunteerRanks },
@@ -54,9 +69,26 @@ export const updateVolunteerRank = async (volunteerRanks) => {
       headers: { "x-token": accessToken },
     }
   );
-  console.log(reqst.data);
+
   sessionStorage.setItem("user", JSON.stringify(reqst.data));
   patchEvent();
+  return reqst.data;
+};
+
+export const updateApplyDeptRank = async (applyDeptRanks) => {
+  const signInInfo = JSON.parse(window.localStorage.getItem("signIn"));
+  const accessToken = signInInfo.accessToken;
+
+  const reqst = await req.post(
+    "/post-apply/apply-dept-rank",
+    { applyDepts: applyDeptRanks },
+    {
+      headers: { "x-token": accessToken },
+    }
+  );
+
+  sessionStorage.setItem("user", JSON.stringify(reqst.data));
+  patchStarEvent();
   return reqst.data;
 };
 
@@ -66,5 +98,10 @@ export const getApplyPaperUrl = async () => {
   const reqst = await req.get("/pre-apply/get-apply-paper", {
     headers: { "x-token": accessToken },
   });
+  return reqst.data;
+};
+
+export const getApplyResultUrl = async () => {
+  const reqst = await req.get("/apply/apply-results");
   return reqst.data;
 };

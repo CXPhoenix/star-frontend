@@ -2,41 +2,33 @@
 import { reactive } from "vue";
 import InputArea from "../components/InputArea.vue";
 import VerticalButton from "../components/VerticalButton.vue";
-import { updateVolunteerRank } from "../utils/api.js";
-import { rank } from "../utils/status.js";
+import { updateApplyDeptRank } from "../utils/api.js";
+import { star } from "../utils/status.js";
 
 const tableHeaders = ["學系代碼", "大學名稱", "學群類別", "學系名稱"];
 const user = JSON.parse(window.sessionStorage.getItem("user"));
 
 const dept = reactive({
   valid: [
-    ...user.validDept.filter(
-      (vd) =>
-        !rank.volunteer.find(
-          (vr) =>
-            vd.schoolId === vr.schoolId && vd.deptCategory === vr.deptCategory
-        )
+    ...user.applyValidDept.filter(
+      (vd) => !star.rank.find((vr) => vd.deptId === vr.deptId)
     ),
   ],
   searchText: "",
 });
 
 const getApplyDept = async (dept) => {
-  rank.volunteer.push(dept);
-  await updateVolunteerRank(rank.volunteer);
+  star.rank.push(dept);
+  await updateApplyDeptRank(star.rank);
 };
 
 const deptFilter = () => {
   // 還原所有的內容
-  dept.valid = [...user.validDept];
+  dept.valid = [...user.applyValidDept];
   // 排除其他可能存在的重複內容
   dept.valid = [
     ...dept.valid.filter(
-      (vd) =>
-        !rank.volunteer.find(
-          (vr) =>
-            vd.schoolId === vr.schoolId && vd.deptCategory === vr.deptCategory
-        )
+      (vd) => !star.rank.find((vr) => vd.deptId === vr.deptId)
     ),
   ];
   // 搜尋
@@ -54,7 +46,7 @@ const deptFilter = () => {
 
 <template>
   <div class="mx-auto w-full max-w-3xl py-4 px-2">
-    <router-link to="/user/apply-volunteer">
+    <router-link to="/user/apply-star-rank">
       <VerticalButton bgColor="#ffffff00">
         <span>
           <font-awesome-icon icon="fa-solid fa-backward-step" />
@@ -89,7 +81,7 @@ const deptFilter = () => {
         class="grid w-full grid-cols-4 justify-items-stretch gap-x-4 border-b-2 py-4 text-center md:text-xl"
         v-for="vD in dept.valid"
         :key="vD.deptId"
-        to="/user/apply-volunteer"
+        to="/user/apply-star-rank"
         @click="getApplyDept(vD)"
       >
         <p class="">{{ vD.deptId }}</p>
