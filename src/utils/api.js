@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const req = axios.create({
-  baseURL: "https://star.fhsh.tp.edu.tw/api",
+  baseURL: "https://star-apply-api.fhsh.taipei",
 });
 
 // export const wsUrl = "wss://star.fhsh.tp.edu.tw/api/apply/ws";
